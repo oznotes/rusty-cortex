@@ -1,0 +1,105 @@
+/* ===== DESIGN SYSTEM — Rusty Cortex ===== */
+/* See docs/specs/design-dna.md for rules  */
+
+/* --- Dark Theme (default) --- */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1e2233;
+  --surface: #161b2e;
+  --surface-hover: #1a2744;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text: #e5e7eb;
+  --text-secondary: #d1d5db;
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --text-label: rgba(255, 255, 255, 0.35);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --button-secondary: rgba(255, 255, 255, 0.06);
+  --primary: #4361ee;
+  --primary-hover: #3a56d4;
+  --primary-rgb: 67, 97, 238;
+  --success: #2ecc71;
+  --success-rgb: 46, 204, 113;
+  --warning: #f5c542;
+  --warning-rgb: 245, 197, 66;
+  --danger: #e74c3c;
+  --danger-rgb: 231, 76, 60;
+  --log-bg: #161b2e;
+  --log-text: rgba(255, 255, 255, 0.6);
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* --- Light Theme --- */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #f6f8fa;
+  --surface-hover: #f0f2f5;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --text: #24292f;
+  --text-secondary: #57606a;
+  --text-muted: rgba(0, 0, 0, 0.4);
+  --text-label: rgba(0, 0, 0, 0.4);
+  --input-bg: #ffffff;
+  --button-secondary: #f6f8fa;
+  --primary: #4361ee;
+  --primary-hover: #3a56d4;
+  --primary-rgb: 67, 97, 238;
+  --success: #16a34a;
+  --success-rgb: 22, 163, 74;
+  --warning: #b45309;
+  --warning-rgb: 180, 83, 9;
+  --danger: #dc2626;
+  --danger-rgb: 220, 38, 38;
+  --log-bg: #f6f8fa;
+  --log-text: rgba(0, 0, 0, 0.6);
+  --shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* --- Type Scale --- */
+:root {
+  --font-xs: 9px;
+  --font-sm: 11px;
+  --font-base: 12px;
+  --font-md: 13px;
+  --font-lg: 16px;
+
+  font-family: Inter, -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+/* --- Reset --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+button, select, input {
+  font-family: inherit;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
