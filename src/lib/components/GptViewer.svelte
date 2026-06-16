@@ -211,7 +211,7 @@
     opacity: 0.75;
     transition: opacity 0.15s;
     cursor: pointer;
-    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    border-right: 1px solid var(--border);
   }
 
   .bar-segment:last-child {

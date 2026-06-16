@@ -102,7 +102,6 @@
 
   .log-empty {
     color: var(--text-muted);
-    font-style: italic;
   }
 
   .log-entry {

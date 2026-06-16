@@ -103,3 +103,9 @@ button, select, input {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* --- Keyboard focus ring (focus-visible only; mouse clicks stay ring-free) --- */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}

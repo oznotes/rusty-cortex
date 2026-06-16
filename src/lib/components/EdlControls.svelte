@@ -805,7 +805,7 @@
   }
 
   .scan-item-dim {
-    opacity: 0.55;
+    opacity: 0.4;
   }
 
   /* Saved programmers */
@@ -868,7 +868,7 @@
     font-weight: 600;
     cursor: pointer;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: 6px;
     transition: background 0.15s, color 0.15s;
     flex-shrink: 0;
   }

@@ -159,7 +159,6 @@
     height: 6px;
     border-radius: 50%;
     background: var(--success);
-    box-shadow: 0 0 6px rgba(var(--success-rgb), 0.4);
   }
 
   .root-help {

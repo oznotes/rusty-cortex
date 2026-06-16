@@ -555,12 +555,6 @@
   .btn-danger.confirming {
     background: var(--danger);
     filter: brightness(0.85);
-    animation: pulse-confirm 1s infinite;
-  }
-
-  @keyframes pulse-confirm {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
   }
 
   .verify-badge {
@@ -592,7 +586,7 @@
   }
 
   .missing-warning {
-    background: rgba(231, 76, 60, 0.1);
+    background: rgba(var(--danger-rgb), 0.1);
     border: 1px solid var(--danger);
     border-radius: 6px;
     padding: 10px 12px;

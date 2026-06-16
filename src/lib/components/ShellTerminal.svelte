@@ -404,7 +404,6 @@
     background: var(--surface);
     color: var(--text-muted);
     cursor: pointer;
-    outline: none;
     transition: border-color 0.15s;
   }
 
@@ -445,7 +444,6 @@
     font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
     color: var(--text);
     cursor: pointer;
-    outline: none;
     transition: border-color 0.15s;
   }
 
@@ -454,7 +452,7 @@
   }
 
   .logcat-level:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
   }
 

@@ -465,7 +465,7 @@ impl AdbProtocol {
     /// Collect device health data (battery, storage, RAM). BLOCKING.
     /// Runs a single batched shell command — no root required.
     pub fn get_health_sync(serial: &str, force_usb: bool) -> crate::types::DeviceHealth {
-        let cmd = "echo '---BATTERY---' && dumpsys battery 2>/dev/null && echo '---STORAGE---' && df /data 2>/dev/null && echo '---MEMORY---' && cat /proc/meminfo 2>/dev/null";
+        let cmd = "echo '---BATTERY---' && dumpsys battery 2>/dev/null && echo '---STORAGE---' && df /data 2>/dev/null && echo '---MEMORY---' && cat /proc/meminfo 2>/dev/null && echo '---BATTHEALTH---' && cat /sys/class/power_supply/battery/health 2>/dev/null";
         let output = match shell::adb_shell(serial, cmd, ADB_SHELL_TIMEOUT, force_usb) {
             Ok(result) => result.stdout,
             Err(e) => {
@@ -495,15 +495,7 @@ impl AdbProtocol {
                 if let Some(val) = line.strip_prefix("level:") {
                     battery_level = val.trim().parse::<u32>().ok();
                 } else if let Some(val) = line.strip_prefix("health:") {
-                    battery_health = Some(match val.trim() {
-                        "2" => "Good".to_string(),
-                        "3" => "Overheat".to_string(),
-                        "4" => "Dead".to_string(),
-                        "5" => "Over voltage".to_string(),
-                        "6" => "Failure".to_string(),
-                        "7" => "Cold".to_string(),
-                        other => format!("Unknown ({other})"),
-                    });
+                    battery_health = Self::parse_battery_health(val.trim());
                 } else if let Some(val) = line.strip_prefix("temperature:") {
                     if let Ok(raw) = val.trim().parse::<f32>() {
                         battery_temp = Some(raw / 10.0);
@@ -511,6 +503,19 @@ impl AdbProtocol {
                 }
             }
             break;
+        }
+
+        // Some vendors (notably Samsung) report `health:` in `dumpsys battery`
+        // as a HAL proxy handle (e.g. "vendor.samsung.hardware.health@2.0::ISehHealth@Proxy")
+        // instead of the BatteryManager integer code, so the parse above yields None.
+        // Fall back to the sysfs power_supply node, which exposes a human-readable
+        // status string ("Good", "Overheat", ...) directly.
+        if battery_health.is_none() {
+            if let Some(idx) = sections.iter().position(|s| s.contains("BATTHEALTH")) {
+                if let Some(raw) = sections.get(idx + 1) {
+                    battery_health = Self::parse_battery_health(raw.trim());
+                }
+            }
         }
 
         // Parse storage section (df /data output)
@@ -578,6 +583,38 @@ impl AdbProtocol {
             ram_used_gb,
             ram_total_gb,
         }
+    }
+
+    /// Map a battery `health` value to a display string.
+    ///
+    /// Accepts either the numeric BatteryManager code from `dumpsys battery`
+    /// or the human-readable string from `/sys/class/power_supply/battery/health`.
+    /// Returns `None` for empty values or vendor HAL proxy handles (e.g. Samsung's
+    /// "...::ISehHealth@Proxy"), so such junk never reaches the UI.
+    fn parse_battery_health(raw: &str) -> Option<String> {
+        let s = raw.trim();
+        if s.is_empty() {
+            return None;
+        }
+        if let Ok(code) = s.parse::<u32>() {
+            return Some(
+                match code {
+                    2 => "Good",
+                    3 => "Overheat",
+                    4 => "Dead",
+                    5 => "Over voltage",
+                    6 => "Failure",
+                    7 => "Cold",
+                    _ => "Unknown", // 1 = unknown, plus any unmapped code
+                }
+                .to_string(),
+            );
+        }
+        // Non-numeric and not a HAL proxy handle => treat as a sysfs status string.
+        if s.contains("::") || s.contains('@') {
+            return None;
+        }
+        Some(s.to_string())
     }
 
     /// Wrap a shell command for the appropriate root type.

@@ -11,10 +11,10 @@ This repository is **Rusty Cortex**, a multi-protocol mobile phone flashing tool
 Write code like you're submitting a patch to Linus Torvalds. Every line must justify its existence.
 
 - No dead code, no commented-out code, no TODO-later hacks left in production paths
-- No band-aids â€” find the root cause and fix it properly
-- No unnecessary abstractions â€” three similar lines beat a premature helper
+- No band-aids — find the root cause and fix it properly
+- No unnecessary abstractions — three similar lines beat a premature helper
 - If it compiles with warnings, it's not done
-- If it panics in production, you broke it â€” handle errors explicitly
+- If it panics in production, you broke it — handle errors explicitly
 - Test before you claim it works
 
 ## Architecture
@@ -74,39 +74,39 @@ src/                # Svelte 5 frontend (TypeScript)
 
 ### Rust Backend
 - All Tauri commands that do I/O must be `async`
-- **Never block the Tokio async runtime** â€” use `tokio::task::spawn_blocking()` for blocking operations (USB enumeration, file I/O)
+- **Never block the Tokio async runtime** — use `tokio::task::spawn_blocking()` for blocking operations (USB enumeration, file I/O)
 - Always add timeouts to external operations (USB, protocol commands)
 - Use `tracing::info!` / `tracing::error!` for logging, never `println!`
-- Errors flow through `FlashError` enum â†’ serialized to frontend via `Result<T, String>`
-- `unwrap()` is banned in command handlers â€” use `map_err` or `?`
+- Errors flow through `FlashError` enum → serialized to frontend via `Result<T, String>`
+- `unwrap()` is banned in command handlers — use `map_err` or `?`
 
 ### Svelte Frontend
-- **Svelte 5 runes only** â€” use `$state`, `$derived`, `$effect`, not legacy `$:` or `let` reactivity
+- **Svelte 5 runes only** — use `$state`, `$derived`, `$effect`, not legacy `$:` or `let` reactivity
 - Use `onclick={handler}` not `on:click={handler}` (Svelte 5 event syntax)
 - Store subscriptions use `$store` syntax
-- **Never call `listen()` from `@tauri-apps/api/event` inside `onMount`** â€” it creates IPC connections that block subsequent `invoke()` calls on Windows/WebView2. Set up event listeners lazily or at store level.
-- Keep components thin â€” business logic goes in stores or utility functions
+- **Never call `listen()` from `@tauri-apps/api/event` inside `onMount`** — it creates IPC connections that block subsequent `invoke()` calls on Windows/WebView2. Set up event listeners lazily or at store level.
+- Keep components thin — business logic goes in stores or utility functions
 - Type all invoke calls: `invoke<ReturnType>("command_name", { args })`
 
 ### IPC
-- Frontend â†” Backend communication via `invoke()` only
-- Events (backend â†’ frontend) via Tauri events for real-time updates (progress, logs)
+- Frontend ↔ Backend communication via `invoke()` only
+- Events (backend → frontend) via Tauri events for real-time updates (progress, logs)
 - Event listeners must be set up lazily, not on component mount
 
 ### Known Pitfalls
-- `nusb::list_devices().wait()` is synchronous and can hang on Windows â€” always wrap in `spawn_blocking` + timeout
-- Tauri v2 on WebView2 has IPC connection limits â€” avoid long-lived event subscriptions during startup
-- NSIS installer fails if the app exe is still running â€” close before rebuilding
+- `nusb::list_devices().wait()` is synchronous and can hang on Windows — always wrap in `spawn_blocking` + timeout
+- Tauri v2 on WebView2 has IPC connection limits — avoid long-lived event subscriptions during startup
+- NSIS installer fails if the app exe is still running — close before rebuilding
 
 ## Project Status
 
-- **Phase 1 (Fastboot):** Complete â€” detection, flash, erase, getvar, reboot, partition list
-- **Phase 2 (ADB):** Complete â€” detection, getprop, reboot, sideload, push/pull, install APK, shell (smart routing), partition dump, raw image dump, device file browser
-- **Phase 2.5 (ADB UX):** Complete â€” horizontal action rows, resizable panel, edge case hardening, recovery mode detection
-- **Phase 3 (Shell V2 + USB Direct):** Complete â€” Shell V2 binary streaming, dump resume, ADB Direct USB with AOSP-style message dispatcher (v0.8.0)
-- **Phase 3.5:** Partition write, Dump UI redesign, USB interactive shell, terminal colors â€” **COMPLETE**
-- **Phase 3.6:** Fastboot fix, reboot polish, architecture review, FlashProtocol trait removal â€” **COMPLETE**
-- **Phase 4:** EDL Tiers 1-3 complete + auth + hash filter â€” **EDL (Qualcomm)** shipped with programmer auto-detection database + post-write verification + Xiaomi EDL authentication (`sig` + RSA token, ACKed on K20 Pro) + **hash filter** (score scan results by HWID/PKHash). Live logcat streaming shipped. MTK BROM, Magisk auto-root planned.
+- **Phase 1 (Fastboot):** Complete — detection, flash, erase, getvar, reboot, partition list
+- **Phase 2 (ADB):** Complete — detection, getprop, reboot, sideload, push/pull, install APK, shell (smart routing), partition dump, raw image dump, device file browser
+- **Phase 2.5 (ADB UX):** Complete — horizontal action rows, resizable panel, edge case hardening, recovery mode detection
+- **Phase 3 (Shell V2 + USB Direct):** Complete — Shell V2 binary streaming, dump resume, ADB Direct USB with AOSP-style message dispatcher (v0.8.0)
+- **Phase 3.5:** Partition write, Dump UI redesign, USB interactive shell, terminal colors — **COMPLETE**
+- **Phase 3.6:** Fastboot fix, reboot polish, architecture review, FlashProtocol trait removal — **COMPLETE**
+- **Phase 4:** EDL Tiers 1-3 complete + auth + hash filter — **EDL (Qualcomm)** shipped with programmer auto-detection database + post-write verification + Xiaomi EDL authentication (`sig` + RSA token, ACKed on K20 Pro) + **hash filter** (score scan results by HWID/PKHash). Live logcat streaming shipped. MTK BROM, Magisk auto-root planned.
 
 ## Design Docs
 

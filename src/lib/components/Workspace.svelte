@@ -110,7 +110,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-label);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
   }
 
   .edl-header {
@@ -137,7 +137,7 @@
   .tab-bar {
     display: flex;
     gap: 0;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     border-bottom: 1px solid var(--border);
   }
 

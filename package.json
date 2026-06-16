@@ -1,6 +1,6 @@
 {
   "name": "rusty-cortex",
-  "version": "0.8.6",
+  "version": "0.8.9",
   "description": "Multi-protocol mobile phone flashing tool",
   "type": "module",
   "scripts": {

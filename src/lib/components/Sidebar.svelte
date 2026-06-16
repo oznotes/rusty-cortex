@@ -397,6 +397,8 @@
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    overflow-y: auto;
+    min-height: 0;
   }
 
   .section {
@@ -483,12 +485,10 @@
     height: 6px;
     border-radius: 50%;
     background: var(--success);
-    box-shadow: 0 0 6px rgba(var(--success-rgb), 0.4);
   }
 
   .mode-dot.off {
     background: var(--text-muted);
-    box-shadow: none;
   }
 
   .mode-text {
@@ -613,7 +613,6 @@
 
   .mode-dot.recovery-dot {
     background: var(--warning);
-    box-shadow: 0 0 6px rgba(var(--warning-rgb), 0.4);
   }
 
   .mode-text.recovery-text {

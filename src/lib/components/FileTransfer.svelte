@@ -173,7 +173,7 @@
         disabled={isTransferring}
       />
       <button class="row-browse" onclick={() => openBrowser("push")} disabled={isTransferring} title="Browse device">
-        &#128193;
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
       </button>
       <button class="row-btn-primary" onclick={doPush} disabled={!canPush}>
         {isTransferring ? "..." : "Push"}
@@ -193,7 +193,7 @@
         disabled={isTransferring}
       />
       <button class="row-browse" onclick={() => openBrowser("pull")} disabled={isTransferring} title="Browse device">
-        &#128193;
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
       </button>
       <span class="row-arrow">&#8594;</span>
       <input
@@ -262,7 +262,7 @@
   }
 
   .action-row.disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     pointer-events: none;
   }
 
@@ -332,7 +332,7 @@
     font-size: var(--font-base);
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     cursor: pointer;
     white-space: nowrap;
   }

@@ -32,7 +32,7 @@
   .progress-container {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     margin-top: 16px;
   }
 
